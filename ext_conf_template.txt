@@ -1,0 +1,23 @@
+# cat=basic; type=string; label=LLL:EXT:aws_image_recognition/Resources/Private/Language/locallang_em.xlf:access_key
+access_key =
+
+# cat=basic; type=string; label=LLL:EXT:aws_image_recognition/Resources/Private/Language/locallang_em.xlf:access_secret
+access_secret =
+
+# cat=basic; type=string; label=LLL:EXT:aws_image_recognition/Resources/Private/Language/locallang_em.xlf:aws_region
+aws_region = us-east-1
+
+# cat=basic; type=string; label=LLL:EXT:aws_image_recognition/Resources/Private/Language/locallang_em.xlf:image_types
+image_types = jpg,jpeg,png
+
+# cat=basic; type=int+; label=LLL:EXT:aws_image_recognition/Resources/Private/Language/locallang_em.xlf:max_file_size
+max_file_size = 2048000
+
+# cat=basic; type=boolean; label=LLL:EXT:aws_image_recognition/Resources/Private/Language/locallang_em.xlf:enable_detect_objects
+enable_detect_objects = 1
+
+## # cat=basic; type=boolean; label=LLL:EXT:aws_image_recognition/Resources/Private/Language/locallang_em.xlf:enable_detect_faces
+## enable_detect_faces = 0
+
+# cat=basic; type=boolean; label=LLL:EXT:aws_image_recognition/Resources/Private/Language/locallang_em.xlf:enable_recognize_celebrities
+enable_recognize_celebrities = 0

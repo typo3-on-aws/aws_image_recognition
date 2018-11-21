@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2017-09-07T00:00:00Z" product-name="aws_image_recognition">
+        <header/>
+        <body>
+            <trans-unit id="extension_name" xml:space="preserve">
+                <source>AWS Image Recognition</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

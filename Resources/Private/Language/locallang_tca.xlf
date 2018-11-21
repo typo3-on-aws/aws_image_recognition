@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2017-09-07T00:00:00Z" product-name="aws_image_recognition">
+        <header/>
+        <body>
+            <trans-unit id="tabs.image_recognition">
+                <source>Image Recognition</source>
+            </trans-unit>
+            <trans-unit id="palette.objects">
+                <source>Detected Objects</source>
+            </trans-unit>
+            <trans-unit id="palette.celebrities">
+                <source>Recognized Celebrities</source>
+            </trans-unit>
+
+            <trans-unit id="sys_file_metadata.object1">
+                <source>Object 1</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.object2">
+                <source>Object 2</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.object3">
+                <source>Object 3</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.object4">
+                <source>Object 4</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.object5">
+                <source>Object 5</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.object6">
+                <source>Object 6</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.object7">
+                <source>Object 7</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.object8">
+                <source>Object 8</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.object9">
+                <source>Object 9</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.object10">
+                <source>Object 10</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.object11">
+                <source>Object 11</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.object12">
+                <source>Object 12</source>
+            </trans-unit>
+
+            <trans-unit id="sys_file_metadata.celebrity_id">
+                <source>Celebrity ID</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.celebrity_name">
+                <source>Celebrity Name</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.celebrity_match_confidence">
+                <source>Match Confidence</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
