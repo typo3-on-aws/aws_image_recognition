@@ -1,4 +1,5 @@
 <?php
+
 namespace SchamsNet\AwsImageRecognition\Slots;
 
 /*
@@ -18,7 +19,7 @@ use \TYPO3\CMS\Core\Log\LogManager;
 use \TYPO3\CMS\Core\Resource\FileInterface;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \SchamsNet\AwsImageRecognition\Services\AmazonRekognition;
-use \SchamsNet\AwsImageRecognition\Utilities\Extension;
+use \TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
 /**
  * Slot implementation when a file is uploaded/replaced but before it is processed
@@ -140,7 +141,8 @@ class FileProcessor
         $this->logger->info(__METHOD__ . ':' . __LINE__);
 
         // Get valid image types from extension configuration
-        $validMimeTypes = Extension::getExtensionConfigurationValue($this->extensionKey, 'image_types');
+        $validMimeTypes = GeneralUtility::makeInstance(ExtensionConfiguration::class)
+            ->get($this->extensionKey, 'image_types');
         if (empty($validMimeTypes)) {
             // Set default values, if no configuration is set
             $validMimeTypes = $this->defaultValidMimeTypes;
@@ -159,7 +161,8 @@ class FileProcessor
         }
 
         // Get maximum file size from extension configuration
-        $maxFileSize = Extension::getExtensionConfigurationValue($this->extensionKey, 'max_file_size');
+        $maxFileSize = GeneralUtility::makeInstance(ExtensionConfiguration::class)
+            ->get($this->extensionKey, 'max_file_size');
         if ($maxFileSize == 0) {
             // Set default values, if no configuration is set or configuration is invalid (e.g. not numeric)
             $maxFileSize = $this->defaultMaxFileSize;

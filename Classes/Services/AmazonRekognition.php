@@ -1,4 +1,5 @@
 <?php
+
 namespace SchamsNet\AwsImageRecognition\Services;
 
 /*
@@ -20,7 +21,7 @@ use \TYPO3\CMS\Core\Log\LogManager;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Object\ObjectManager;
 use \SchamsNet\AwsImageRecognition\Domain\Repository\SysFileMetadataRepository;
-use \SchamsNet\AwsImageRecognition\Utilities\Extension;
+use \TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
 // use Aws\S3\S3Client;
 // use Aws\S3\StreamWrapper;
@@ -139,7 +140,8 @@ class AmazonRekognition
         ];
 
         foreach ($mapping as $enabled => $function) {
-            if (Extension::getExtensionConfigurationValue($this->extensionKey, $enabled)) {
+            if (GeneralUtility::makeInstance(ExtensionConfiguration::class)
+                ->get($this->extensionKey, $enabled)) {
                 $this->$function();
             }
         }
@@ -269,11 +271,14 @@ class AmazonRekognition
         // configuration options
         // @see http://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/configuration.html
         return [
-            'region' => Extension::getExtensionConfigurationValue($this->extensionKey, 'aws_region'),
+            'region' => GeneralUtility::makeInstance(ExtensionConfiguration::class)
+                ->get($this->extensionKey, 'aws_region'),
             'version' => 'latest',
             'credentials' => [
-                'key' => Extension::getExtensionConfigurationValue($this->extensionKey, 'access_key'),
-                'secret' => Extension::getExtensionConfigurationValue($this->extensionKey, 'access_secret')
+                'key' => GeneralUtility::makeInstance(ExtensionConfiguration::class)
+                    ->get($this->extensionKey, 'access_key'),
+                'secret' => GeneralUtility::makeInstance(ExtensionConfiguration::class)
+                    ->get($this->extensionKey, 'access_secret')
             ],
 //          'http' => [
 //              'connect_timeout' => 5,
