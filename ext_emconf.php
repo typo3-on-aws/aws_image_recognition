@@ -13,12 +13,12 @@
  * @link        https://schams.net
  */
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'AWS Image Recognition',
     // @codingStandardsIgnoreLine
     'description' => 'Uses Amazon Web Service to detect objects, scenes, faces, recognize celebrities in images uploaded at the TYPO3 backend.',
     'category' => 'backend',
-    'version' => '1.0.0',
+    'version' => '2.0.0',
     'module' => '',
     'state' => 'alpha',
     'createDirs' => '',
@@ -26,15 +26,13 @@ $EM_CONF[$_EXTKEY] = array(
     'author' => 'Michael Schams (schams.net)',
     'author_email' => 'schams.net',
     'author_company' => 'https://schams.net',
-    'constraints' => array(
-        'depends' => array(
-            'typo3' => '8.7.0-8.7.999',
+    'constraints' => [
+        'depends' => [
+            'typo3' => '8.7.0-9.5.999',
             'php' => '7.0.0-7.0.999',
             'aws_sdk_php' => '3.32.0-3.999.999',
-        ),
-        'conflicts' => array(
-        ),
-        'suggests' => array(
-        ),
-    )
-);
+        ],
+        'conflicts' => [],
+        'suggests' => [],
+    ],
+];

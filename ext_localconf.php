@@ -47,16 +47,16 @@ $boot($_EXTKEY);
 unset($boot);
 
 // Configure logging
-$logging = array(
+$logging = [
     // configuration for ERROR level log entries
-    \TYPO3\CMS\Core\Log\LogLevel::INFO => array(
+    \TYPO3\CMS\Core\Log\LogLevel::INFO => [
         // add a FileWriter
-        'TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter' => array(
+        'TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter' => [
             // configuration for the writer
             'logFile' => 'typo3temp/var/logs/' . date('Ymd') . '.' . $extensionName . '.log'
-        )
-    )
-);
+        ]
+    ]
+];
 
 // Activate logging
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['SchamsNet']['AwsImageRecognition']['Slots']['writerConfiguration'] = $logging;
