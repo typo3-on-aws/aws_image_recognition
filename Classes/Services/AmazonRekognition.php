@@ -100,7 +100,7 @@ class AmazonRekognition
      *
      * @access public
      */
-    public function __construct(): void
+    public function __construct()
     {
         /** @var Logger $logger */
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
