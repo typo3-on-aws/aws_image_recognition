@@ -172,10 +172,14 @@ class AmazonRekognition
             if (is_object($result)) {
                 if (isset($result['Labels'])) {
                     $data = [];
+                    $keywords = [];
                     foreach ($result['Labels'] as $key => $object) {
                         $data['object' . ($key + 1)] = $object['Name'] . ' (' . floor($object['Confidence']) . '%)';
+                        $keywords[] = $object['Name'];
                     }
                     if (count($data) > 0) {
+                        $data['keywords'] = implode(", ", $keywords);
+
                         $this->database->update(
                             $this->table,
                             $data,
