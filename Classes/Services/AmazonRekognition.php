@@ -14,11 +14,15 @@ namespace SchamsNet\AwsImageRecognition\Services;
  * @link        https://schams.net
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use SchamsNet\AwsImageRecognition\Domain\Repository\SysFileMetadataRepository;
+use SchamsNet\AwsImageRecognition\Utilities\Extension;
+
 // use Aws\S3\S3Client;
 // use Aws\S3\StreamWrapper;
-use SchamsNet\AwsImageRecognition\Utilities\Extension;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Amazon Rekognition Service Class
@@ -57,7 +61,7 @@ class AmazonRekognition
 
     /**
      * @access private
-     * @var xxx
+     * @var \TYPO3\CMS\Core\Resource\FileInterface
      */
     private $file;
 
@@ -68,6 +72,14 @@ class AmazonRekognition
      * @var \TYPO3\CMS\Core\Database\DatabaseConnection
      */
     private $database = null;
+
+    /**
+     * Database table "sys_file_metadata"
+     *
+     * @access private
+     * @var string
+     */
+    private $table = 'sys_file_metadata';
 
     /**
      * Prospects Repository
@@ -87,28 +99,25 @@ class AmazonRekognition
      * Constructor
      *
      * @access public
-     * @return void
      */
-    public function __construct()
+    public function __construct(): void
     {
-        /** @var \TYPO3\CMS\Core\Log\Logger $logger */
-        $this->logger = GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger(__CLASS__);
+        /** @var Logger $logger */
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
-        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        $this->sysFileMetadataRepository = $objectManager->get(
-            'SchamsNet\AwsImageRecognition\Domain\Repository\SysFileMetadataRepository'
-        );
+        $objectManager = GeneralUtility::makeInstance(TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $this->sysFileMetadataRepository = $objectManager->get(SysFileMetadataRepository::class);
 
-        $this->database = static::getDatabaseConnection();
+        $this->database = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
     }
 
     /**
      * Process image
      *
      * @access public
-     * @return void
+     * @param \TYPO3\CMS\Core\Resource\FileInterface $file
      */
-    public function processImage($file)
+    public function processImage($file): void
     {
         // http://docs.aws.amazon.com/aws-sdk-php/v3/api/api-rekognition-2016-06-27.html#recognizecelebrities
         $this->logger->info(__METHOD__ . ':' . __LINE__);
@@ -143,9 +152,9 @@ class AmazonRekognition
      * birthday party; and concepts like landscape, evening, and nature.
      *
      * @access private
-     * @return void
+     * @throws RekognitionException
      */
-    public function detectObjects()
+    public function detectObjects(): void
     {
         $this->logger->info(__METHOD__ . ':' . __LINE__);
         try {
@@ -164,10 +173,11 @@ class AmazonRekognition
                         $data['object' . ($key + 1)] = $object['Name'] . ' (' . floor($object['Confidence']) . '%)';
                     }
                     if (count($data) > 0) {
-                        $this->database->exec_UPDATEquery(
-                            'sys_file_metadata',
-                            'uid = ' . (int)$this->file->getUid(),
-                            $data
+                        $this->database->update(
+                            $this->table,
+                            $data,
+                            ['uid' => (int)$this->file->getUid()],
+                            [Connection::PARAM_INT]
                         );
                     }
                 }
@@ -188,9 +198,9 @@ class AmazonRekognition
      * faces, the algorithm may not detect the faces or might detect faces with lower confidence.
      *
      * @access private
-     * @return void
+     * @throws RekognitionException
      */
-    public function detectFaces()
+    public function detectFaces(): void
     {
         $this->logger->info(__METHOD__ . ':' . __LINE__);
         try {
@@ -217,9 +227,9 @@ class AmazonRekognition
      * a ComparedFace object that you can use to locate the celebrity's face on the image.
      *
      * @access private
-     * @return void
+     * @throws RekognitionException
      */
-    public function recognizeCelebrities()
+    public function recognizeCelebrities(): void
     {
         $this->logger->info(__METHOD__ . ':' . __LINE__);
         try {
@@ -232,14 +242,14 @@ class AmazonRekognition
             if (is_object($result)) {
                 if (isset($result['CelebrityFaces'][0])) {
                     $object = $result['CelebrityFaces'][0];
-                    $this->database->exec_UPDATEquery(
-                        'sys_file_metadata',
-                        'uid = ' . (int)$this->file->getUid(),
+                    $this->database->update(
+                        $this->table,
                         [
                             'celebrity_id' => $object['Id'],
                             'celebrity_name' => $object['Name'],
                             'celebrity_match_confidence' => $object['MatchConfidence']
-                        ]
+                        ],
+                        [Connection::PARAM_INT]
                     );
                 }
             }
@@ -250,9 +260,10 @@ class AmazonRekognition
     /**
      * Initialize AWS options
      *
-     * @return void
+     * @access public
+     * @return array
      */
-    public function initializeOptions()
+    public function initializeOptions(): array
     {
         // configuration options
         // @see http://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/configuration.html
@@ -281,25 +292,16 @@ class AmazonRekognition
      * @access private
      * @return string Binary-safe file content
      */
-    private function loadImage()
+    private function loadImage(): string
     {
         $this->logger->info(__METHOD__ . ':' . __LINE__);
 
         $file = $this->file->getForLocalProcessing();
         if (is_readable($file)) {
             $stream = @fopen($file, 'r');
+
             return @fread($stream, filesize($file));
         }
-    }
-
-    /**
-     * Returns the current database connection
-     *
-     * @access private
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    private static function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
+        return null;
     }
 }
