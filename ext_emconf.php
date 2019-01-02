@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = [
     'constraints' => [
         'depends' => [
             'typo3' => '8.7.0-9.5.999',
-            'php' => '7.0.0-7.0.999',
+            'php' => '7.0.0-7.2.999',
             'aws_sdk_php' => '3.32.0-3.999.999',
         ],
         'conflicts' => [],
