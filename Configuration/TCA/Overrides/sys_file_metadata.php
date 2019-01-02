@@ -80,11 +80,11 @@ $fields = [
 ];
 
 foreach ($fields as $field) {
-    // ...
+    // Add celebrity fields
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns($tableName, $field);
 }
 
-// Make fields visible in TCEforms:
+// Make fields visible in TCEFORM:
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     $tableName,
     '
@@ -97,7 +97,7 @@ foreach ($fields as $field) {
 );
 
 // Add the object palette:
-$GLOBALS['TCA'][$tableName]['palettes']['objects'] = array(
+$GLOBALS['TCA'][$tableName]['palettes']['objects'] = [
     'showitem' => implode(',', [
         'object1',
         'object2',
@@ -115,13 +115,13 @@ $GLOBALS['TCA'][$tableName]['palettes']['objects'] = array(
         'object11',
         'object12'
     ])
-);
+];
 
 // Add the celebrities palette:
-$GLOBALS['TCA'][$tableName]['palettes']['celebrities'] = array(
+$GLOBALS['TCA'][$tableName]['palettes']['celebrities'] = [
     'showitem' => implode(',', [
         'celebrity_id',
         'celebrity_name',
         'celebrity_match_confidence'
     ])
-);
+];
