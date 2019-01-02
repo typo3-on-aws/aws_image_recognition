@@ -14,12 +14,12 @@ namespace SchamsNet\AwsImageRecognition\Services;
  * @link        https://schams.net
  */
 
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use SchamsNet\AwsImageRecognition\Domain\Repository\SysFileMetadataRepository;
-use SchamsNet\AwsImageRecognition\Utilities\Extension;
+use \TYPO3\CMS\Core\Database\ConnectionPool;
+use \TYPO3\CMS\Core\Log\LogManager;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Extbase\Object\ObjectManager;
+use \SchamsNet\AwsImageRecognition\Domain\Repository\SysFileMetadataRepository;
+use \SchamsNet\AwsImageRecognition\Utilities\Extension;
 
 // use Aws\S3\S3Client;
 // use Aws\S3\StreamWrapper;
@@ -105,7 +105,7 @@ class AmazonRekognition
         /** @var Logger $logger */
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
-        $objectManager = GeneralUtility::makeInstance(TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->sysFileMetadataRepository = $objectManager->get(SysFileMetadataRepository::class);
 
         $this->database = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);

@@ -14,11 +14,11 @@ namespace SchamsNet\AwsImageRecognition\Slots;
  * @link        https://schams.net
  */
 
-use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use SchamsNet\AwsImageRecognition\Services\AmazonRekognition;
-use SchamsNet\AwsImageRecognition\Utilities\Extension;
+use \TYPO3\CMS\Core\Log\LogManager;
+use \TYPO3\CMS\Core\Resource\FileInterface;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \SchamsNet\AwsImageRecognition\Services\AmazonRekognition;
+use \SchamsNet\AwsImageRecognition\Utilities\Extension;
 
 /**
  * Slot implementation when a file is uploaded/replaced but before it is processed
