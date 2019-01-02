@@ -15,6 +15,7 @@ namespace SchamsNet\AwsImageRecognition\Services;
  */
 
 use \TYPO3\CMS\Core\Database\ConnectionPool;
+use \TYPO3\CMS\Core\Database\Connection;
 use \TYPO3\CMS\Core\Log\LogManager;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Object\ObjectManager;
