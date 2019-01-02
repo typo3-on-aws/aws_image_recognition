@@ -254,8 +254,10 @@ class AmazonRekognition
                         [
                             'celebrity_id' => $object['Id'],
                             'celebrity_name' => $object['Name'],
-                            'celebrity_match_confidence' => $object['MatchConfidence']
+                            'celebrity_match_confidence' => $object['MatchConfidence'],
+                            'title' => $object['Name'],
                         ],
+                        ['uid' => (int)$this->file->getUid()],
                         [Connection::PARAM_INT]
                     );
                 }
