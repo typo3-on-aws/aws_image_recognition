@@ -14,12 +14,14 @@ namespace SchamsNet\AwsImageRecognition\Slots;
  * @link        https://schams.net
  */
 
-use SchamsNet\AwsImageRecognition\Utilities\Extension;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility;
+use SchamsNet\AwsImageRecognition\Services\AmazonRekognition;
+use SchamsNet\AwsImageRecognition\Utilities\Extension;
 
 /**
- * Slot implementation when a file is uploaded but before it is processed
+ * Slot implementation when a file is uploaded/replaced but before it is processed
  * by \TYPO3\CMS\Core\Resource\ResourceStorage
  */
 class FileProcessor
@@ -57,7 +59,7 @@ class FileProcessor
     private $defaultMaxFileSize = 2048000;
 
     /**
-     * @access protected
+     * @access private
      * @var \TYPO3\CMS\Core\Log\LogManager
      */
     private $logger;
@@ -73,21 +75,21 @@ class FileProcessor
      */
     public function __construct()
     {
-        /** @var $logger \TYPO3\CMS\Core\Log\Logger */
-        $this->logger = GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger(__CLASS__);
+        /** @var Logger $logger */
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
-        /** @var $recognition SchamsNet\AwsImageRecognition\Services\AmazonRekognition */
-        $this->recognition = GeneralUtility::makeInstance('SchamsNet\AwsImageRecognition\Services\AmazonRekognition');
+        /** @var AmazonRekognition $recognition */
+        $this->recognition = GeneralUtility::makeInstance(AmazonRekognition::class);
     }
 
     /**
-     * [...]
+     * Process file when uploaded by BE user
      *
+     * @access public
      * @param \TYPO3\CMS\Core\Resource\FileInterface $file
      * @param \TYPO3\CMS\Core\Resource\Folder $folder
-     * @return void
      */
-    public function processFile(\TYPO3\CMS\Core\Resource\FileInterface $file, $folder = null)
+    public function processFile(FileInterface $file, $folder = null): void
     {
         $this->logger->info(__METHOD__ . ':' . __LINE__);
         $this->logFileDetails($file);
@@ -97,13 +99,13 @@ class FileProcessor
     }
 
     /**
-     * [...]
+     * Process file when replaced by BE user
      *
+     * @access public
      * @param \TYPO3\CMS\Core\Resource\FileInterface $file
      * @param string $temporaryFile
-     * @return void
      */
-    public function processReplaceFile(\TYPO3\CMS\Core\Resource\FileInterface $file, $temporaryFile = null)
+    public function processReplaceFile(FileInterface $file, $temporaryFile = null): void
     {
         $this->logger->info(__METHOD__ . ':' . __LINE__);
         $this->processFile($file, null);
@@ -112,14 +114,13 @@ class FileProcessor
     /**
      * Write some details about the uploaded file to TYPO3's log
      *
-     * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-     * @return void
+     * @access private
+     * @param FileInterface $file
      */
-    public function logFileDetails(\TYPO3\CMS\Core\Resource\FileInterface $file)
+    private function logFileDetails(FileInterface $file): void
     {
         $this->logger->info(__METHOD__ . ':' . __LINE__);
 
-//        $this->logger->info(print_r($file, 1));
         $this->logger->info('FAL resource UID: ' . $file->getUid());
         $this->logger->info('File name: ' . $file->getName());
         $this->logger->info('Temporary path/file: ' . $file->getForLocalProcessing());
@@ -130,10 +131,11 @@ class FileProcessor
     /**
      * Check if uploaded file meets requirements for image proccesing
      *
-     * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-     * @return void
+     * @access private
+     * @param FileInterface $file
+     * @return boolean
      */
-    public function isValidImage(\TYPO3\CMS\Core\Resource\FileInterface $file)
+    private function isValidImage(FileInterface $file): boolean
     {
         $this->logger->info(__METHOD__ . ':' . __LINE__);
 
