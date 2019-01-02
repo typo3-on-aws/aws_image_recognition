@@ -1,0 +1,32 @@
+{
+	"name": "schams-net/aws-image-recognition",
+	"type": "typo3-cms-extension",
+	"description": "Uses Amazon Web Service to detect objects, scenes, faces, recognize celebrities in images uploaded at the TYPO3 backend.",
+	"keywords": [
+		"TYPO3",
+		"extension",
+		"AWS",
+		"Rekognition"
+	],
+	"authors": [
+		{
+			"name": "Michael Schams",
+			"role": "Developer"
+		},
+		{
+			"name": "Rico Neumann",
+			"role": "Developer"
+		}
+	],
+	"license": [
+		"GPL-2.0-or-later"
+	],
+	"require": {
+		"typo3/cms-core": "^8.7.13 || ^9.5.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"SchamsNet\\AwsImageRecognition\\": "Classes"
+		}
+	}
+}
