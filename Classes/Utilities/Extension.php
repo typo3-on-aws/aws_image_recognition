@@ -14,22 +14,27 @@ namespace SchamsNet\AwsImageRecognition\Utilities;
  * @link        https://schams.net
  */
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility;
 
 /**
  * Extension Utility Class
  */
-class Extension implements \TYPO3\CMS\Core\SingletonInterface
+class Extension implements SingletonInterface
 {
     /**
      * Returns the version of a specific extension
      *
      * @access public
      * @param string Extension key
+     * @throws \InvalidArgumentException
+     * @throws \TYPO3\CMS\Core\Package\Exception
      * @return string Extension version, e.g. "1.2.999"
      */
-    public static function getExtensionVersion($extensionKey)
+    public static function getExtensionVersion($extensionKey): string
     {
         return ExtensionManagementUtility::getExtensionVersion($extensionKey);
     }
@@ -41,15 +46,15 @@ class Extension implements \TYPO3\CMS\Core\SingletonInterface
      * @param string Extension key
      * @return array Extension configuration
      */
-    public static function getExtensionConfiguration($extensionKey)
+    public static function getExtensionConfiguration($extensionKey): array
     {
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        /** @var $objectManager ObjectManager  */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 
-        /** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
-        $configurationUtility = $objectManager->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
+        /** @var $configurationUtility ConfigurationUtility */
+        $configurationUtility = $objectManager->get(ConfigurationUtility::class);
 
-        $validConfigurationKeys = array(
+        $validConfigurationKeys = [
             'access_key',
             'access_secret',
             'aws_region',
@@ -58,7 +63,7 @@ class Extension implements \TYPO3\CMS\Core\SingletonInterface
             'enable_detect_objects',
             'enable_detect_faces',
             'enable_recognize_celebrities'
-        );
+        ];
 
         $extensionConfiguration = $configurationUtility->getCurrentConfiguration($extensionKey);
         if (is_array($extensionConfiguration)) {
