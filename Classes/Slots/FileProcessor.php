@@ -133,9 +133,9 @@ class FileProcessor
      *
      * @access private
      * @param FileInterface $file
-     * @return boolean
+     * @return bool
      */
-    private function isValidImage(FileInterface $file): boolean
+    private function isValidImage(FileInterface $file): bool
     {
         $this->logger->info(__METHOD__ . ':' . __LINE__);
 
