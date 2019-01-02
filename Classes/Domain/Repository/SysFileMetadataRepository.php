@@ -14,9 +14,11 @@ namespace SchamsNet\AwsImageRecognition\Domain\Repository;
  * @link        https://schams.net
  */
 
+use \TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * Repository: SysFileMetadata
  */
-class SysFileMetadataRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class SysFileMetadataRepository extends Repository
 {
 }
