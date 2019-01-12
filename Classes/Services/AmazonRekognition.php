@@ -174,17 +174,16 @@ class AmazonRekognition
                     $data = [];
                     $keywords = [];
                     foreach ($result['Labels'] as $key => $object) {
-                        $data['object' . ($key + 1)] = $object['Name'] . ' (' . floor($object['Confidence']) . '%)';
                         $keywords[] = $object['Name'];
                     }
-                    if (count($data) > 0) {
+                    if (count($keywords) > 0) {
                         $data['keywords'] = implode(", ", $keywords);
 
                         $this->database->update(
                             $this->table,
                             $data,
                             ['uid' => (int)$this->file->getUid()],
-                            [Connection::PARAM_INT]
+                            [Connection::PARAM_STR]
                         );
                     }
                 }
@@ -220,6 +219,7 @@ class AmazonRekognition
                 ]
             ]);
             $featuresBlacklist = ["Landmarks", "Emotions", "Pose", "Quality", "BoundingBox", "Confidence"];
+            $minConfidence = 40;
 
             if (is_object($result)) {
                 if (isset($result['FaceDetails'])) {
@@ -227,7 +227,7 @@ class AmazonRekognition
 
                     foreach ($result['FaceDetails'][0] as $key=>$details) {
                         if(!in_array($key,$featuresBlacklist)){
-                            if ($details['Value'] == 1 && $details['Confidence'] > 40) {
+                            if ($details['Value'] == 1 && $details['Confidence'] > $minConfidence) {
                                 $description[] = $key;
                             }
                         }
@@ -236,12 +236,10 @@ class AmazonRekognition
                                 $description[] = $keyEmotion;
                             }
                         }
-
                     }
 
                     if (count($description) > 0) {
                         $description = implode(", ",$description);
-
 
                         $GLOBALS['BE_USER']->simplelog($description,"description", 0);
                         $data['description'] = $description;
@@ -285,9 +283,6 @@ class AmazonRekognition
                     $this->database->update(
                         $this->table,
                         [
-                            'celebrity_id' => $object['Id'],
-                            'celebrity_name' => $object['Name'],
-                            'celebrity_match_confidence' => $object['MatchConfidence'],
                             'title' => $object['Name'],
                         ],
                         ['uid' => (int)$this->file->getUid()],
@@ -327,7 +322,7 @@ class AmazonRekognition
 //                  'https' => 'tcp://192.168.16.1:11',
 //              ]
 //          ]
-            //'debug' => true
+//          'debug' => true
         ];
     }
 
