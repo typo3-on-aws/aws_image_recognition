@@ -214,12 +214,45 @@ class AmazonRekognition
             $result = $this->client->DetectFaces([
                 'Image' => [
                     'Bytes' => $this->loadImage()
+                ],
+                'Attributes' => [
+                    'ALL'
                 ]
             ]);
+            $featuresBlacklist = ["Landmarks", "Emotions", "Pose", "Quality", "BoundingBox", "Confidence"];
 
             if (is_object($result)) {
                 if (isset($result['FaceDetails'])) {
-                    // @TODO not implemented yet
+                    $description = [];
+
+                    foreach ($result['FaceDetails'][0] as $key=>$details) {
+                        if(!in_array($key,$featuresBlacklist)){
+                            if ($details['Value'] == 1 && $details['Confidence'] > 40) {
+                                $description[] = $key;
+                            }
+                        }
+                        if ($key == 'EMOTIONS') {
+                            foreach ($details as $keyEmotion=>$emotion) {
+                                $description[] = $keyEmotion;
+                            }
+                        }
+
+                    }
+
+                    if (count($description) > 0) {
+                        $description = implode(", ",$description);
+
+
+                        $GLOBALS['BE_USER']->simplelog($description,"description", 0);
+                        $data['description'] = $description;
+
+                        $this->database->update(
+                            $this->table,
+                            $data,
+                            ['uid' => (int)$this->file->getUid()],
+                            [Connection::PARAM_STR]
+                        );
+                    }
                 }
             }
         } catch (RekognitionException $e) {
@@ -258,7 +291,7 @@ class AmazonRekognition
                             'title' => $object['Name'],
                         ],
                         ['uid' => (int)$this->file->getUid()],
-                        [Connection::PARAM_INT]
+                        [Connection::PARAM_STR]
                     );
                 }
             }

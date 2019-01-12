@@ -16,7 +16,7 @@ max_file_size = 2048000
 # cat=basic; type=boolean; label=LLL:EXT:aws_image_recognition/Resources/Private/Language/locallang_em.xlf:enable_detect_objects
 enable_detect_objects = 1
 
-## # cat=basic; type=boolean; label=LLL:EXT:aws_image_recognition/Resources/Private/Language/locallang_em.xlf:enable_detect_faces
+# cat=basic; type=boolean; label=LLL:EXT:aws_image_recognition/Resources/Private/Language/locallang_em.xlf:enable_detect_faces
 enable_detect_faces = 0
 
 # cat=basic; type=boolean; label=LLL:EXT:aws_image_recognition/Resources/Private/Language/locallang_em.xlf:enable_recognize_celebrities
