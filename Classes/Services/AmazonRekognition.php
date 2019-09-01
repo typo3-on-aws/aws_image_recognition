@@ -225,23 +225,23 @@ class AmazonRekognition
                 if (isset($result['FaceDetails'])) {
                     $description = [];
 
-                    foreach ($result['FaceDetails'][0] as $key=>$details) {
-                        if(!in_array($key,$featuresBlacklist)){
+                    foreach ($result['FaceDetails'][0] as $key => $details) {
+                        if (!in_array($key, $featuresBlacklist)) {
                             if ($details['Value'] == 1 && $details['Confidence'] > $minConfidence) {
                                 $description[] = $key;
                             }
                         }
                         if ($key == 'EMOTIONS') {
-                            foreach ($details as $keyEmotion=>$emotion) {
+                            foreach ($details as $keyEmotion => $emotion) {
                                 $description[] = $keyEmotion;
                             }
                         }
                     }
 
                     if (count($description) > 0) {
-                        $description = implode(", ",$description);
+                        $description = implode(", ", $description);
 
-                        $GLOBALS['BE_USER']->simplelog($description,"description", 0);
+                        $GLOBALS['BE_USER']->simplelog($description, "description", 0);
                         $data['description'] = $description;
 
                         $this->database->update(
