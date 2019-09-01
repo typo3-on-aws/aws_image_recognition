@@ -16,7 +16,7 @@
 $EM_CONF[$_EXTKEY] = [
     'title' => 'AWS Image Recognition',
     // @codingStandardsIgnoreLine
-    'description' => 'Uses Amazon Web Service to detect objects, scenes, faces, recognize celebrities in images uploaded at the TYPO3 backend.',
+    'description' => 'Uses Amazon Web Service (AWS) to detect objects, scenes, faces, recognize celebrities in images uploaded at the TYPO3 backend',
     'category' => 'backend',
     'version' => '2.0.0',
     'module' => '',
@@ -29,8 +29,8 @@ $EM_CONF[$_EXTKEY] = [
     'constraints' => [
         'depends' => [
             'typo3' => '9.0.0-9.5.999',
-	    'php' => '7.0.0-7.2.999',
-	    'filemetadata' => '9.0.0-9.5.99',
+            'php' => '7.0.0-7.2.999',
+            'filemetadata' => '9.0.0-9.5.99',
             'aws_sdk_php' => '3.32.0-3.999.999',
         ],
         'conflicts' => [],
