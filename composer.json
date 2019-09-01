@@ -26,6 +26,7 @@
 	},
 	"require": {
 		"typo3/cms-core": "^9",
+		"typo3/cms-filemetadata": "^9",
 		"aws/aws-sdk-php": "^3"
 	},
 	"conflict": {
