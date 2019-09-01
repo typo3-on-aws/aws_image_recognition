@@ -13,38 +13,30 @@
  * @link        https://schams.net
  */
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+defined('TYPO3_MODE') || die('Access denied.');
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
+call_user_func(
+    function () {
+        /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
+        $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class
+        );
 
-$extensionName = GeneralUtility::underscoredToUpperCamelCase($_EXTKEY);
-$extensionPath = ExtensionManagementUtility::extPath($_EXTKEY);
+        $signalSlotDispatcher->connect(
+            \TYPO3\CMS\Core\Resource\ResourceStorage::class,
+            \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileAdd,
+            \SchamsNet\AwsImageRecognition\Slots\FileProcessor::class,
+            \SchamsNet\AwsImageRecognition\Slots\FileProcessor::SIGNAL_PROCESS_FILE
+        );
 
-$boot = function ($_EXTKEY) {
-
-    /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
-    $signalSlotDispatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-
-    $signalSlotDispatcher->connect(
-        \TYPO3\CMS\Core\Resource\ResourceStorage::class,
-        \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileAdd,
-        \SchamsNet\AwsImageRecognition\Slots\FileProcessor::class,
-        \SchamsNet\AwsImageRecognition\Slots\FileProcessor::SIGNAL_PROCESS_FILE
-    );
-
-    $signalSlotDispatcher->connect(
-        \TYPO3\CMS\Core\Resource\ResourceStorage::class,
-        \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileReplace,
-        \SchamsNet\AwsImageRecognition\Slots\FileProcessor::class,
-        \SchamsNet\AwsImageRecognition\Slots\FileProcessor::SIGNAL_PROCESS_REPLACE_FILE
-    );
-};
-
-$boot($_EXTKEY);
-unset($boot);
+        $signalSlotDispatcher->connect(
+            \TYPO3\CMS\Core\Resource\ResourceStorage::class,
+            \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileReplace,
+            \SchamsNet\AwsImageRecognition\Slots\FileProcessor::class,
+            \SchamsNet\AwsImageRecognition\Slots\FileProcessor::SIGNAL_PROCESS_REPLACE_FILE
+        );
+    }
+);
 
 // Configure logging
 $logging = [
