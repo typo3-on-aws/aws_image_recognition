@@ -15,15 +15,16 @@ namespace SchamsNet\AwsImageRecognition\Services;
  * @link        https://schams.net
  */
 
-use \TYPO3\CMS\Core\Database\ConnectionPool;
-use \TYPO3\CMS\Core\Database\Connection;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Extbase\Object\ObjectManager;
+use \Aws\Rekognition\RekognitionClient;
+use \Schams\AwsImageRecognition\Domain\Repository\SysFileMetadataRepository;
 use \SchamsNet\AwsImageRecognition\Domain\Repository\SysFileMetadataRepository;
 use \TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-
-// use Aws\S3\S3Client;
-// use Aws\S3\StreamWrapper;
+use \TYPO3\CMS\Core\Database\Connection;
+use \TYPO3\CMS\Core\Database\ConnectionPool;
+use \TYPO3\CMS\Core\Database\DatabaseConnection;
+use \TYPO3\CMS\Core\Resource\FileInterface;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Amazon Rekognition Service Class
@@ -56,13 +57,13 @@ class AmazonRekognition
 
     /**
      * @access private
-     * @var \Aws\Rekognition\RekognitionClient
+     * @var RekognitionClient
      */
     private $client;
 
     /**
      * @access private
-     * @var \TYPO3\CMS\Core\Resource\FileInterface
+     * @var FileInterface
      */
     private $file;
 
@@ -70,7 +71,7 @@ class AmazonRekognition
      * Database connection
      *
      * @access private
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+     * @var DatabaseConnection
      */
     private $database = null;
 
@@ -86,7 +87,7 @@ class AmazonRekognition
      * Prospects Repository
      *
      * @access protected
-     * @var \Schams\AwsImageRecognition\Domain\Repository\SysFileMetadataRepository
+     * @var SysFileMetadataRepository
      */
     protected $sysFileMetadataRepository = null;
 
@@ -107,9 +108,9 @@ class AmazonRekognition
      * Process image
      *
      * @access public
-     * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+     * @param FileInterface $file
      */
-    public function processImage($file): void
+    public function processImage(FileInterface $file): void
     {
         // ...
         $this->file = $file;
@@ -117,8 +118,8 @@ class AmazonRekognition
         // ...
         $this->options = $this->initializeOptions();
 
-        /** @var \Aws\Rekognition\RekognitionClient $client */
-        $this->client = GeneralUtility::makeInstance('Aws\\Rekognition\\RekognitionClient', $this->options);
+        /** @var RekognitionClient $client */
+        $this->client = GeneralUtility::makeInstance(RekognitionClient::class, $this->options);
 
         $mapping = [
             'enable_detect_objects' => 'detectObjects',

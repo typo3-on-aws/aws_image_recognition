@@ -15,10 +15,11 @@ namespace SchamsNet\AwsImageRecognition\Slots;
  * @link        https://schams.net
  */
 
-use \TYPO3\CMS\Core\Resource\FileInterface;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \SchamsNet\AwsImageRecognition\Services\AmazonRekognition;
 use \TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use \TYPO3\CMS\Core\Resource\FileInterface;
+use \TYPO3\CMS\Core\Resource\Folder;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Slot implementation when a file is uploaded/replaced but before it is processed
@@ -60,7 +61,7 @@ class FileProcessor
 
     /**
      * @access protected
-     * @var \SchamsNet\AwsImageRecognition\Services\AmazonRecognition
+     * @var AmazonRekognition
      */
     private $recognition;
 
@@ -74,11 +75,11 @@ class FileProcessor
     }
 
     /**
-     * Process file when uploaded by BE user
+     * Process file, uploaded by backend user
      *
      * @access public
-     * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-     * @param \TYPO3\CMS\Core\Resource\Folder $folder
+     * @param FileInterface $file
+     * @param Folder $folder
      */
     public function processFile(FileInterface $file, $folder = null): void
     {
@@ -88,13 +89,13 @@ class FileProcessor
     }
 
     /**
-     * Process file when replaced by BE user
+     * Process file, replaced by backend user
      *
      * @access public
-     * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+     * @param FileInterface $file
      * @param string $temporaryFile
      */
-    public function processReplaceFile(FileInterface $file, $temporaryFile = null): void
+    public function processReplaceFile(FileInterface $file, string $temporaryFile = null): void
     {
         $this->processFile($file, null);
     }
