@@ -111,7 +111,7 @@ class FileProcessor
     {
         // Get valid image types from extension configuration
         $validMimeTypes = GeneralUtility::makeInstance(ExtensionConfiguration::class)
-            ->get($this->extensionKey, 'image_types');
+            ->get($this->extensionKey, 'validImageTypes');
         if (empty($validMimeTypes)) {
             // Set default values, if no configuration is set
             $validMimeTypes = $this->defaultValidMimeTypes;
@@ -131,7 +131,7 @@ class FileProcessor
 
         // Get maximum file size from extension configuration
         $maxFileSize = GeneralUtility::makeInstance(ExtensionConfiguration::class)
-            ->get($this->extensionKey, 'max_file_size');
+            ->get($this->extensionKey, 'maxFileSize');
         if ($maxFileSize == 0) {
             // Set default values, if no configuration is set or configuration is invalid (e.g. not numeric)
             $maxFileSize = $this->defaultMaxFileSize;

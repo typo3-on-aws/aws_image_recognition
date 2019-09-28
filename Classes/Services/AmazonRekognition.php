@@ -121,9 +121,9 @@ class AmazonRekognition
         $this->client = GeneralUtility::makeInstance(RekognitionClient::class, $this->options);
 
         $mapping = [
-            'enable_detect_objects' => 'detectObjects',
-            'enable_detect_faces' => 'detectFaces',
-            'enable_recognize_celebrities' => 'recognizeCelebrities'
+            'detectObjectsEnabled' => 'detectObjects',
+            'detectFacesEnabled' => 'detectFaces',
+            'recognizeCelebritiesEnabled' => 'recognizeCelebrities'
         ];
 
         foreach ($mapping as $enabled => $function) {
@@ -286,13 +286,13 @@ class AmazonRekognition
         // @see http://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/configuration.html
         return [
             'region' => GeneralUtility::makeInstance(ExtensionConfiguration::class)
-                ->get($this->extensionKey, 'aws_region'),
+                ->get($this->extensionKey, 'awsRegion'),
             'version' => 'latest',
             'credentials' => [
                 'key' => GeneralUtility::makeInstance(ExtensionConfiguration::class)
-                    ->get($this->extensionKey, 'access_key'),
+                    ->get($this->extensionKey, 'awsAccessKeyId'),
                 'secret' => GeneralUtility::makeInstance(ExtensionConfiguration::class)
-                    ->get($this->extensionKey, 'access_secret')
+                    ->get($this->extensionKey, 'awsAccessSecretKey')
             ],
 //          'http' => [
 //              'connect_timeout' => 5,

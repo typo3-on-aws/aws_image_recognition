@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2017-09-07T00:00:00Z" product-name="aws_image_recognition">
+    <file source-language="en" datatype="plaintext" original="messages" date="2019-09-28T00:00:00Z" product-name="aws_image_recognition">
         <header/>
         <body>
-            <trans-unit id="access_key" xml:space="preserve">
-                <source>Access Key</source>
+            <trans-unit id="awsAccessKeyId" xml:space="preserve">
+                <source>AWS Access Key ID:Access key ID with appropriate permissions to execute Amazon Rekognition functions in the configured region.</source>
             </trans-unit>
-            <trans-unit id="access_secret" xml:space="preserve">
-                <source>Access Secret</source>
+            <trans-unit id="awsAccessSecretKey" xml:space="preserve">
+                <source>AWS Access Secret Key:Access secret key.</source>
             </trans-unit>
-            <trans-unit id="aws_region" xml:space="preserve">
+            <trans-unit id="awsRegion" xml:space="preserve">
                 <source>AWS Region:The AWS region to access (e.g. &quot;us-east-1&quot;).</source>
             </trans-unit>
-            <trans-unit id="image_types" xml:space="preserve">
+            <trans-unit id="validImageTypes" xml:space="preserve">
                 <source>Image Types:Comma-separated list of valid image types (e.g. jpg,jpeg,png).</source>
             </trans-unit>
-            <trans-unit id="max_file_size" xml:space="preserve">
-                <source>Maximum File Size:Image files larger than this size will not be processed. Maximum: 5MB. Recommended: 2MB.</source>
+            <trans-unit id="maxFileSize" xml:space="preserve">
+                <source>Maximum File Size:Image files larger than this size will not be processed (maximum: 5MB, recommended: 2MB).</source>
             </trans-unit>
-            <trans-unit id="enable_detect_objects" xml:space="preserve">
-                <source>Detect Objects:Enable/disable function to recognize specific objects in images.</source>
+            <trans-unit id="detectObjectsEnabled" xml:space="preserve">
+                <source>Detect Objects:Enable/disable function to recognize specific objects in images (default: enabled).</source>
             </trans-unit>
-            <trans-unit id="enable_detect_faces" xml:space="preserve">
-                <source>Detect Faces:Enable/disable function to recognize faces in images.</source>
+            <trans-unit id="detectFacesEnabled" xml:space="preserve">
+                <source>Detect Faces:Enable/disable function to recognize faces in images (default: disabled).</source>
             </trans-unit>
-            <trans-unit id="enable_recognize_celebrities" xml:space="preserve">
-                <source>Recognize Celebrities:Enable/disable function to recognize celebreties in images.</source>
+            <trans-unit id="recognizeCelebritiesEnabled" xml:space="preserve">
+                <source>Recognize Celebrities:Enable/disable function to recognize celebreties in images (default: disabled).</source>
             </trans-unit>
         </body>
     </file>
