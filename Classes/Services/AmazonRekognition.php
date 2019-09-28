@@ -163,7 +163,7 @@ class AmazonRekognition
                     }
                     if (count($keywords) > 0) {
                         $data = ['keywords' => implode(', ', $keywords)];
-                        $this->updateFileRecord(intval($this->file->getUid()), $data);
+                        $this->updateFileRecord($data);
                     }
                 }
             }
@@ -218,7 +218,7 @@ class AmazonRekognition
 
                     if (count($description) > 0) {
                         $data = ['description' => implode(', ', $description)];
-                        $this->updateFileRecord(intval($this->file->getUid()), $data);
+                        $this->updateFileRecord($data);
                     }
                 }
             }
@@ -249,7 +249,7 @@ class AmazonRekognition
                 if (isset($result['CelebrityFaces'][0])) {
                     $object = $result['CelebrityFaces'][0];
                     $data = ['title' => $object['Name']];
-                    $this->updateFileRecord(intval($this->file->getUid()), $data);
+                    $this->updateFileRecord($data);
                 }
             }
         } catch (RekognitionException $e) {
@@ -292,15 +292,14 @@ class AmazonRekognition
      * Update file record in the FAL repository
      *
      * @access private
-     * @param int
      * @param array
      */
-    private function updateFileRecord(int $uid, array $data = []): void
+    private function updateFileRecord(array $data = []): void
     {
         $result = $this->database->update(
             $this->table,
             $data,
-            ['uid' => $uid],
+            ['uid' => intval($this->file->getUid())],
             [Connection::PARAM_STR]
         );
     }
