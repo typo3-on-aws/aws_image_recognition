@@ -15,7 +15,6 @@ namespace SchamsNet\AwsImageRecognition\Slots;
  * @link        https://schams.net
  */
 
-use \TYPO3\CMS\Core\Log\LogManager;
 use \TYPO3\CMS\Core\Resource\FileInterface;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \SchamsNet\AwsImageRecognition\Services\AmazonRekognition;
@@ -60,12 +59,6 @@ class FileProcessor
     private $defaultMaxFileSize = 2048000;
 
     /**
-     * @access private
-     * @var \TYPO3\CMS\Core\Log\LogManager
-     */
-    private $logger;
-
-    /**
      * @access protected
      * @var \SchamsNet\AwsImageRecognition\Services\AmazonRecognition
      */
@@ -76,9 +69,6 @@ class FileProcessor
      */
     public function __construct()
     {
-        /** @var Logger $logger */
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-
         /** @var AmazonRekognition $recognition */
         $this->recognition = GeneralUtility::makeInstance(AmazonRekognition::class);
     }
@@ -92,8 +82,6 @@ class FileProcessor
      */
     public function processFile(FileInterface $file, $folder = null): void
     {
-        $this->logger->info(__METHOD__ . ':' . __LINE__);
-        $this->logFileDetails($file);
         if ($this->isValidImage($file)) {
             $this->recognition->processImage($file);
         }
@@ -108,25 +96,7 @@ class FileProcessor
      */
     public function processReplaceFile(FileInterface $file, $temporaryFile = null): void
     {
-        $this->logger->info(__METHOD__ . ':' . __LINE__);
         $this->processFile($file, null);
-    }
-
-    /**
-     * Write some details about the uploaded file to TYPO3's log
-     *
-     * @access private
-     * @param FileInterface $file
-     */
-    private function logFileDetails(FileInterface $file): void
-    {
-        $this->logger->info(__METHOD__ . ':' . __LINE__);
-
-        $this->logger->info('FAL resource UID: ' . $file->getUid());
-        $this->logger->info('File name: ' . $file->getName());
-        $this->logger->info('Temporary path/file: ' . $file->getForLocalProcessing());
-        $this->logger->info('File mime type: ' . $file->getMimeType());
-        $this->logger->info('File size: ' . $file->getSize());
     }
 
     /**
@@ -138,8 +108,6 @@ class FileProcessor
      */
     private function isValidImage(FileInterface $file): bool
     {
-        $this->logger->info(__METHOD__ . ':' . __LINE__);
-
         // Get valid image types from extension configuration
         $validMimeTypes = GeneralUtility::makeInstance(ExtensionConfiguration::class)
             ->get($this->extensionKey, 'image_types');
@@ -156,7 +124,7 @@ class FileProcessor
         $fileMimeType = explode('/', $file->getMimeType());
 
         if (count($fileMimeType) != 2 || $fileMimeType[0] !== 'image' || !in_array($fileMimeType[1], $validMimeTypes)) {
-            $this->logger->info('Invalid image type: ' . $fileMimeType[1]);
+            // Invalid image type
             return false;
         }
 
@@ -169,7 +137,7 @@ class FileProcessor
         }
 
         if ($file->getSize() == 0 || $file->getSize() > $maxFileSize) {
-            $this->logger->info('Invalid file size: ' . $file->getSize() . ' bytes');
+            // Invalid file size
             return false;
         }
 

@@ -17,7 +17,6 @@ namespace SchamsNet\AwsImageRecognition\Services;
 
 use \TYPO3\CMS\Core\Database\ConnectionPool;
 use \TYPO3\CMS\Core\Database\Connection;
-use \TYPO3\CMS\Core\Log\LogManager;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Object\ObjectManager;
 use \SchamsNet\AwsImageRecognition\Domain\Repository\SysFileMetadataRepository;
@@ -92,21 +91,12 @@ class AmazonRekognition
     protected $sysFileMetadataRepository = null;
 
     /**
-     * @access private
-     * @var \TYPO3\CMS\Core\Log\LogManager
-     */
-    private $logger;
-
-    /**
      * Constructor
      *
      * @access public
      */
     public function __construct()
     {
-        /** @var Logger $logger */
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->sysFileMetadataRepository = $objectManager->get(SysFileMetadataRepository::class);
 
@@ -121,9 +111,6 @@ class AmazonRekognition
      */
     public function processImage($file): void
     {
-        // http://docs.aws.amazon.com/aws-sdk-php/v3/api/api-rekognition-2016-06-27.html#recognizecelebrities
-        $this->logger->info(__METHOD__ . ':' . __LINE__);
-
         // ...
         $this->file = $file;
 
@@ -159,7 +146,6 @@ class AmazonRekognition
      */
     public function detectObjects(): void
     {
-        $this->logger->info(__METHOD__ . ':' . __LINE__);
         try {
             $result = $this->client->DetectLabels([
                 'Image' => [
@@ -208,7 +194,6 @@ class AmazonRekognition
      */
     public function detectFaces(): void
     {
-        $this->logger->info(__METHOD__ . ':' . __LINE__);
         try {
             $result = $this->client->DetectFaces([
                 'Image' => [
@@ -239,11 +224,7 @@ class AmazonRekognition
                     }
 
                     if (count($description) > 0) {
-                        $description = implode(", ", $description);
-
-                        $GLOBALS['BE_USER']->simplelog($description, "description", 0);
-                        $data['description'] = $description;
-
+                        $data['description'] = implode(", ", $description);
                         $this->database->update(
                             $this->table,
                             $data,
@@ -269,7 +250,6 @@ class AmazonRekognition
      */
     public function recognizeCelebrities(): void
     {
-        $this->logger->info(__METHOD__ . ':' . __LINE__);
         try {
             $result = $this->client->recognizeCelebrities([
                 'Image' => [
@@ -334,8 +314,6 @@ class AmazonRekognition
      */
     private function loadImage(): string
     {
-        $this->logger->info(__METHOD__ . ':' . __LINE__);
-
         $file = $this->file->getForLocalProcessing();
         if (is_readable($file)) {
             $stream = @fopen($file, 'r');
