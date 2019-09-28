@@ -16,7 +16,6 @@ namespace SchamsNet\AwsImageRecognition\Services;
  */
 
 use \Aws\Rekognition\RekognitionClient;
-use \Schams\AwsImageRecognition\Domain\Repository\SysFileMetadataRepository;
 use \SchamsNet\AwsImageRecognition\Domain\Repository\SysFileMetadataRepository;
 use \TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use \TYPO3\CMS\Core\Database\Connection;
