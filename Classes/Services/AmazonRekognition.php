@@ -157,20 +157,13 @@ class AmazonRekognition
 
             if (is_object($result)) {
                 if (isset($result['Labels'])) {
-                    $data = [];
                     $keywords = [];
                     foreach ($result['Labels'] as $key => $object) {
                         $keywords[] = $object['Name'];
                     }
                     if (count($keywords) > 0) {
-                        $data['keywords'] = implode(", ", $keywords);
-
-                        $this->database->update(
-                            $this->table,
-                            $data,
-                            ['uid' => (int)$this->file->getUid()],
-                            [Connection::PARAM_STR]
-                        );
+                        $data = ['keywords' => implode(', ', $keywords)];
+                        $this->updateFileRecord(intval($this->file->getUid()), $data);
                     }
                 }
             }
@@ -224,13 +217,8 @@ class AmazonRekognition
                     }
 
                     if (count($description) > 0) {
-                        $data['description'] = implode(", ", $description);
-                        $this->database->update(
-                            $this->table,
-                            $data,
-                            ['uid' => (int)$this->file->getUid()],
-                            [Connection::PARAM_STR]
-                        );
+                        $data = ['description' => implode(', ', $description)];
+                        $this->updateFileRecord(intval($this->file->getUid()), $data);
                     }
                 }
             }
@@ -260,14 +248,8 @@ class AmazonRekognition
             if (is_object($result)) {
                 if (isset($result['CelebrityFaces'][0])) {
                     $object = $result['CelebrityFaces'][0];
-                    $this->database->update(
-                        $this->table,
-                        [
-                            'title' => $object['Name'],
-                        ],
-                        ['uid' => (int)$this->file->getUid()],
-                        [Connection::PARAM_STR]
-                    );
+                    $data = ['title' => $object['Name']];
+                    $this->updateFileRecord(intval($this->file->getUid()), $data);
                 }
             }
         } catch (RekognitionException $e) {
@@ -304,6 +286,25 @@ class AmazonRekognition
 //          ]
 //          'debug' => true
         ];
+    }
+
+    /**
+     * Update file record in the FAL repository
+     *
+     * @access private
+     * @param int
+     * @param array
+     */
+    private function updateFileRecord(int $uid, array $data = []): void
+    {
+        $result = $this->database->update(
+            $this->table,
+            $data,
+            ['uid' => $uid],
+            [Connection::PARAM_STR]
+        );
+
+        fputs($stream, print_r($result, true) . PHP_EOL);
     }
 
     /**
