@@ -303,8 +303,6 @@ class AmazonRekognition
             ['uid' => $uid],
             [Connection::PARAM_STR]
         );
-
-        fputs($stream, print_r($result, true) . PHP_EOL);
     }
 
     /**
