@@ -12,7 +12,8 @@ namespace SchamsNet\AwsImageRecognition\Services;
  * @package     TYPO3
  * @subpackage  aws_image_recognition
  * @author      Michael Schams <schams.net>
- * @link        https://schams.net
+ * @link        https://t3rrific.com/typo3-on-aws/
+ * @link        https://github.com/typo3-on-aws/aws_image_recognition
  */
 
 use \Aws\Rekognition\RekognitionClient;
