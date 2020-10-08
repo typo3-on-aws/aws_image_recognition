@@ -19,9 +19,9 @@ $EM_CONF[$_EXTKEY] = [
     // @codingStandardsIgnoreLine
     'description' => 'Uses Amazon Web Service (AWS) to detect objects, scenes, faces, recognize celebrities in images uploaded at the TYPO3 backend',
     'category' => 'backend',
-    'version' => '2.0.0',
+    'version' => '3.0.0',
     'module' => '',
-    'state' => 'alpha',
+    'state' => 'beta',
     'createDirs' => '',
     'clearcacheonload' => 0,
     'author' => 'Michael Schams (schams.net)',
