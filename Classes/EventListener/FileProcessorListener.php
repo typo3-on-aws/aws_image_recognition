@@ -77,7 +77,9 @@ class FileProcessorListener
     public function invokeAfterFileAdded(AfterFileAddedEvent $event): void
     {
         if ($event->getFile() instanceof File) {
-            $this->processFile($event->getFile());
+            if ($this->isValidImage($file)) {
+                $this->recognition->processImage($file);
+            }
         }
     }
 
@@ -91,20 +93,9 @@ class FileProcessorListener
     public function invokeAfterFileReplaced(AfterFileReplacedEvent $event): void
     {
         if ($event->getFile() instanceof File) {
-            $this->processFile($event->getFile());
-        }
-    }
-
-    /**
-     * Process file, uploaded by backend user
-     *
-     * @access private
-     * @param File $file
-     */
-    private function processFile(File $file): void
-    {
-        if ($this->isValidImage($file)) {
-            $this->recognition->processImage($file);
+            if ($this->isValidImage($file)) {
+                $this->recognition->processImage($file);
+            }
         }
     }
 
