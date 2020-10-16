@@ -17,14 +17,12 @@ namespace SchamsNet\AwsImageRecognition\Services;
  */
 
 use \Aws\Rekognition\RekognitionClient;
-use \SchamsNet\AwsImageRecognition\Domain\Repository\SysFileMetadataRepository;
 use \TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use \TYPO3\CMS\Core\Database\Connection;
 use \TYPO3\CMS\Core\Database\ConnectionPool;
 use \TYPO3\CMS\Core\Database\DatabaseConnection;
 use \TYPO3\CMS\Core\Resource\FileInterface;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Amazon Rekognition Service Class
@@ -76,32 +74,14 @@ class AmazonRekognition
     private $database = null;
 
     /**
-     * Database table "sys_file_metadata"
-     *
-     * @access private
-     * @var string
-     */
-    private $table = 'sys_file_metadata';
-
-    /**
-     * Prospects Repository
-     *
-     * @access protected
-     * @var SysFileMetadataRepository
-     */
-    protected $sysFileMetadataRepository = null;
-
-    /**
      * Constructor
      *
      * @access public
      */
     public function __construct()
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->sysFileMetadataRepository = $objectManager->get(SysFileMetadataRepository::class);
-
-        $this->database = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
+        $this->database = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($this->table);
     }
 
     /**
@@ -276,16 +256,7 @@ class AmazonRekognition
                     ->get($this->extensionKey, 'awsAccessKeyId'),
                 'secret' => GeneralUtility::makeInstance(ExtensionConfiguration::class)
                     ->get($this->extensionKey, 'awsAccessSecretKey')
-            ],
-//          'http' => [
-//              'connect_timeout' => 5,
-//              'timeout' => 5,
-//              'proxy' => [
-//                  'http' => 'tcp://192.168.16.1:10',
-//                  'https' => 'tcp://192.168.16.1:11',
-//              ]
-//          ]
-//          'debug' => true
+            ]
         ];
     }
 
