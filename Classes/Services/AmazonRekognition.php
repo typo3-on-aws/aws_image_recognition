@@ -74,6 +74,14 @@ class AmazonRekognition
     private $database = null;
 
     /**
+     * Database table "sys_file_metadata"
+     *
+     * @access private
+     * @var string
+     */
+    private $table = 'sys_file_metadata';
+
+    /**
      * Constructor
      *
      * @access public
@@ -282,12 +290,11 @@ class AmazonRekognition
      * @access private
      * @return string Binary-safe file content
      */
-    private function loadImage(): string
+    private function loadImage(): ?string
     {
         $file = $this->file->getForLocalProcessing();
         if (is_readable($file)) {
             $stream = @fopen($file, 'r');
-
             return @fread($stream, filesize($file));
         }
         return null;
