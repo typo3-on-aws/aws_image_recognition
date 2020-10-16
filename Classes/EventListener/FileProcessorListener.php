@@ -77,8 +77,8 @@ class FileProcessorListener
     public function invokeAfterFileAdded(AfterFileAddedEvent $event): void
     {
         if ($event->getFile() instanceof File) {
-            if ($this->isValidImage($file)) {
-                $this->recognition->processImage($file);
+            if ($this->isValidImage($event->getFile())) {
+                $this->recognition->processImage($event->getFile());
             }
         }
     }
@@ -93,8 +93,8 @@ class FileProcessorListener
     public function invokeAfterFileReplaced(AfterFileReplacedEvent $event): void
     {
         if ($event->getFile() instanceof File) {
-            if ($this->isValidImage($file)) {
-                $this->recognition->processImage($file);
+            if ($this->isValidImage($event->getFile())) {
+                $this->recognition->processImage($event->getFile());
             }
         }
     }
