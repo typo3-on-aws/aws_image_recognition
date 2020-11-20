@@ -1,7 +1,8 @@
 {
 	"name": "typo3-on-aws/aws-image-recognition",
 	"type": "typo3-cms-extension",
-	"description": "Uses Amazon Web Service (AWS) to detect objects, scenes, faces, recognize celebrities in images uploaded at the TYPO3 backend",
+	"description": "Integrates Amazon Web Service (AWS) to detect objects, scenes, faces, recognize celebrities in images uploaded at the TYPO3 backend",
+	"homepage": "https://t3rrific.com/typo3-on-aws/",
 	"keywords": [
 		"TYPO3",
 		"extension",
