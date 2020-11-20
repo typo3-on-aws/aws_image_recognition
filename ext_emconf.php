@@ -10,7 +10,8 @@
  * @package     TYPO3
  * @subpackage  aws_image_recognition
  * @author      Michael Schams <schams.net>
- * @link        https://schams.net
+ * @link        https://t3rrific.com/typo3-on-aws/
+ * @link        https://github.com/typo3-on-aws/aws_image_recognition
  */
 
 $EM_CONF[$_EXTKEY] = [
@@ -18,19 +19,20 @@ $EM_CONF[$_EXTKEY] = [
     // @codingStandardsIgnoreLine
     'description' => 'Uses Amazon Web Service (AWS) to detect objects, scenes, faces, recognize celebrities in images uploaded at the TYPO3 backend',
     'category' => 'backend',
-    'version' => '2.0.0',
-    'module' => '',
-    'state' => 'alpha',
-    'createDirs' => '',
-    'clearcacheonload' => 0,
-    'author' => 'Michael Schams (schams.net)',
+    'version' => '3.0.0',
+    'state' => 'beta',
+    'author' => 'Michael Schams',
     'author_email' => 'schams.net',
-    'author_company' => 'https://schams.net',
+    'author_company' => 'schams.net',
+    'autoload' => [
+        'psr-4' => [
+            'Typo3OnAws\\AwsImageRecognition\\' => 'Classes'
+        ]
+    ],
     'constraints' => [
         'depends' => [
-            'typo3' => '9.0.0-9.5.999',
-            'php' => '7.0.0-7.3.999',
-            'filemetadata' => '9.0.0-9.5.99'
+            'typo3' => '10.0.0-10.4.999',
+            'php' => '7.0.0-7.3.999'
         ],
         'conflicts' => [],
         'suggests' => [],

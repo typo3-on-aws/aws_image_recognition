@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace SchamsNet\AwsImageRecognition\Services;
+namespace Typo3OnAws\AwsImageRecognition\Services;
 
 /*
  * This file is part of the TYPO3 CMS Extension "AWS Image Recognition"
@@ -12,18 +12,17 @@ namespace SchamsNet\AwsImageRecognition\Services;
  * @package     TYPO3
  * @subpackage  aws_image_recognition
  * @author      Michael Schams <schams.net>
- * @link        https://schams.net
+ * @link        https://t3rrific.com/typo3-on-aws/
+ * @link        https://github.com/typo3-on-aws/aws_image_recognition
  */
 
 use \Aws\Rekognition\RekognitionClient;
-use \SchamsNet\AwsImageRecognition\Domain\Repository\SysFileMetadataRepository;
 use \TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use \TYPO3\CMS\Core\Database\Connection;
 use \TYPO3\CMS\Core\Database\ConnectionPool;
 use \TYPO3\CMS\Core\Database\DatabaseConnection;
 use \TYPO3\CMS\Core\Resource\FileInterface;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Amazon Rekognition Service Class
@@ -83,24 +82,14 @@ class AmazonRekognition
     private $table = 'sys_file_metadata';
 
     /**
-     * Prospects Repository
-     *
-     * @access protected
-     * @var SysFileMetadataRepository
-     */
-    protected $sysFileMetadataRepository = null;
-
-    /**
      * Constructor
      *
      * @access public
      */
     public function __construct()
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->sysFileMetadataRepository = $objectManager->get(SysFileMetadataRepository::class);
-
-        $this->database = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
+        $this->database = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($this->table);
     }
 
     /**
@@ -275,16 +264,7 @@ class AmazonRekognition
                     ->get($this->extensionKey, 'awsAccessKeyId'),
                 'secret' => GeneralUtility::makeInstance(ExtensionConfiguration::class)
                     ->get($this->extensionKey, 'awsAccessSecretKey')
-            ],
-//          'http' => [
-//              'connect_timeout' => 5,
-//              'timeout' => 5,
-//              'proxy' => [
-//                  'http' => 'tcp://192.168.16.1:10',
-//                  'https' => 'tcp://192.168.16.1:11',
-//              ]
-//          ]
-//          'debug' => true
+            ]
         ];
     }
 
@@ -310,12 +290,11 @@ class AmazonRekognition
      * @access private
      * @return string Binary-safe file content
      */
-    private function loadImage(): string
+    private function loadImage(): ?string
     {
         $file = $this->file->getForLocalProcessing();
         if (is_readable($file)) {
             $stream = @fopen($file, 'r');
-
             return @fread($stream, filesize($file));
         }
         return null;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2019-09-28T00:00:00Z" product-name="aws_image_recognition">
+    <file source-language="en" datatype="plaintext" original="messages" date="2020-10-08T00:00:00Z" product-name="aws_image_recognition">
         <header/>
         <body>
             <trans-unit id="awsAccessKeyId" xml:space="preserve">

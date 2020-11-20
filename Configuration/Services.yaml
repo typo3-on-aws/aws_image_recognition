@@ -1,0 +1,11 @@
+services:
+  Typo3OnAws\AwsImageRecognition\EventListener\FileProcessorListener:
+    tags:
+      - name: event.listener
+        identifier: 'invokeAfterFileAdded'
+        event: TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent
+        method: 'invokeAfterFileAdded'
+      - name: event.listener
+        identifier: 'invokeAfterFileReplaced'
+        event: TYPO3\CMS\Core\Resource\Event\AfterFileReplacedEvent
+        method: 'invokeAfterFileReplaced'

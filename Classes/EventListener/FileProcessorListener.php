@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace SchamsNet\AwsImageRecognition\Slots;
+namespace Typo3OnAws\AwsImageRecognition\EventListener;
 
 /*
  * This file is part of the TYPO3 CMS Extension "AWS Image Recognition"
@@ -12,29 +12,22 @@ namespace SchamsNet\AwsImageRecognition\Slots;
  * @package     TYPO3
  * @subpackage  aws_image_recognition
  * @author      Michael Schams <schams.net>
- * @link        https://schams.net
+ * @link        https://t3rrific.com/typo3-on-aws/
+ * @link        https://github.com/typo3-on-aws/aws_image_recognition
  */
 
-use \SchamsNet\AwsImageRecognition\Services\AmazonRekognition;
+use \Typo3OnAws\AwsImageRecognition\Services\AmazonRekognition;
+use \TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
+use \TYPO3\CMS\Core\Resource\Event\AfterFileReplacedEvent;
 use \TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use \TYPO3\CMS\Core\Resource\FileInterface;
-use \TYPO3\CMS\Core\Resource\Folder;
+use \TYPO3\CMS\Core\Resource\File;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Slot implementation when a file is uploaded/replaced but before it is processed
- * by \TYPO3\CMS\Core\Resource\ResourceStorage
+ * Event listener class to process added/replaced files on upload.
  */
-class FileProcessor
+class FileProcessorListener
 {
-    /**
-     * Must match method name in this class. Used in ext_localconf.php
-     *
-     * @var string
-     */
-    const SIGNAL_PROCESS_FILE = 'processFile';
-    const SIGNAL_PROCESS_REPLACE_FILE = 'processReplaceFile';
-
     /**
      * TYPO3 extension key
      *
@@ -75,39 +68,45 @@ class FileProcessor
     }
 
     /**
-     * Process file, uploaded by backend user
+     * Method is executed when a new file is added
+     * See: Configuration/Services.yaml
      *
      * @access public
-     * @param FileInterface $file
-     * @param Folder $folder
+     * @param AfterFileAddedEvent $event
      */
-    public function processFile(FileInterface $file, $folder = null): void
+    public function invokeAfterFileAdded(AfterFileAddedEvent $event): void
     {
-        if ($this->isValidImage($file)) {
-            $this->recognition->processImage($file);
+        if ($event->getFile() instanceof File) {
+            if ($this->isValidImage($event->getFile())) {
+                $this->recognition->processImage($event->getFile());
+            }
         }
     }
 
     /**
-     * Process file, replaced by backend user
+     * Method is executed when a file is replaced
+     * See: Configuration/Services.yaml
      *
      * @access public
-     * @param FileInterface $file
-     * @param string $temporaryFile
+     * @param AfterFileReplacedEvent $event
      */
-    public function processReplaceFile(FileInterface $file, string $temporaryFile = null): void
+    public function invokeAfterFileReplaced(AfterFileReplacedEvent $event): void
     {
-        $this->processFile($file, null);
+        if ($event->getFile() instanceof File) {
+            if ($this->isValidImage($event->getFile())) {
+                $this->recognition->processImage($event->getFile());
+            }
+        }
     }
 
     /**
      * Check if uploaded file meets requirements for image proccesing
      *
      * @access private
-     * @param FileInterface $file
+     * @param File $file
      * @return bool
      */
-    private function isValidImage(FileInterface $file): bool
+    private function isValidImage(File $file): bool
     {
         // Get valid image types from extension configuration
         $validMimeTypes = GeneralUtility::makeInstance(ExtensionConfiguration::class)
