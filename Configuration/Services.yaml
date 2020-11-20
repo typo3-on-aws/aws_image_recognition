@@ -1,5 +1,5 @@
 services:
-  SchamsNet\AwsImageRecognition\EventListener\FileProcessorListener:
+  Typo3OnAws\AwsImageRecognition\EventListener\FileProcessorListener:
     tags:
       - name: event.listener
         identifier: 'invokeAfterFileAdded'

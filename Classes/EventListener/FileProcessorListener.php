@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace SchamsNet\AwsImageRecognition\EventListener;
+namespace Typo3OnAws\AwsImageRecognition\EventListener;
 
 /*
  * This file is part of the TYPO3 CMS Extension "AWS Image Recognition"
@@ -16,7 +16,7 @@ namespace SchamsNet\AwsImageRecognition\EventListener;
  * @link        https://github.com/typo3-on-aws/aws_image_recognition
  */
 
-use \SchamsNet\AwsImageRecognition\Services\AmazonRekognition;
+use \Typo3OnAws\AwsImageRecognition\Services\AmazonRekognition;
 use \TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
 use \TYPO3\CMS\Core\Resource\Event\AfterFileReplacedEvent;
 use \TYPO3\CMS\Core\Configuration\ExtensionConfiguration;

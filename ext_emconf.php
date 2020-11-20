@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'https://schams.net',
     'autoload' => [
         'psr-4' => [
-            'SchamsNet\\AwsImageRecognition\\' => 'Classes'
+            'Typo3OnAws\\AwsImageRecognition\\' => 'Classes'
         ]
     ],
     'constraints' => [

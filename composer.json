@@ -1,5 +1,5 @@
 {
-	"name": "schams-net/aws-image-recognition",
+	"name": "typo3-on-aws/aws-image-recognition",
 	"type": "typo3-cms-extension",
 	"description": "Uses Amazon Web Service (AWS) to detect objects, scenes, faces, recognize celebrities in images uploaded at the TYPO3 backend",
 	"keywords": [
@@ -27,7 +27,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"SchamsNet\\AwsImageRecognition\\": "Classes"
+			"Typo3OnAws\\AwsImageRecognition\\": "Classes"
 		}
 	},
 	"replace": {

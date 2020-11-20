@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace SchamsNet\AwsImageRecognition\Services;
+namespace Typo3OnAws\AwsImageRecognition\Services;
 
 /*
  * This file is part of the TYPO3 CMS Extension "AWS Image Recognition"
