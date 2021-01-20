@@ -32,7 +32,6 @@
 		}
 	},
 	"replace": {
-		"aws_image_recognition": "self.version",
 		"typo3-ter/aws-image-recognition": "self.version"
 	}
 }
